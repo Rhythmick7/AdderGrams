@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Addergrams is a new online word game with new puzzles published daily.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:title" content="Addergrams - a new daily online word puzzle" />
+    <meta property="og:description" content="Try the new, free online word puzzle game" />
+    <meta property="og:image" content="https://addergrams.com/media/AddergramsIcon256x256.png" />
+    <title>AdderGrams New</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="gameboard.js"></script>
+    <link rel="shortcut icon" href="/media/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+    <div style="display: none">
+        <img src="\media\AddergramsIcon256x256.png" 
+            alt="Addergrams Icon" style="max-width: 100%">
+    </div>
+    <div id="header-menu" class="btn-group">
+        <button class="button"
+            id="btnPuzzle" 
+            onclick="gb.toggleDateMenu()"
+            style="width: 25%; font-size:1.0rem;" 
+            title="Puzzles">
+            31-SEP-2023
+        </button>
+        <button class="button"
+            id="btnShare"
+            style="width: 10%;" 
+            onclick="shareProgress()"
+            title="Share progress">
+            <i class="fa fa-share-alt"></i>
+        </button>
+        <button class="button"
+            id="btnBomb"
+            onclick="bomb()" 
+            style="width: 10%;" 
+            title="Game Settings">
+            <i class="fa fa-bomb"></i>
+        </button>
+        <button class="button" 
+            id="btnHints"
+            style="width: 10%;" 
+            onclick="toggleHints()"
+            title="Setting">
+            <i class="fa fa-lightbulb-o"></i>
+        </button>
+        <button class="button"
+            id="btnChecks" 
+            onclick="cycleChecks()" 
+            style="width: 35%;"  
+            title="Letter checking options">
+            <div class="btnCheckDiv">
+                <span id="btnCheckLetters" class="span-diff">
+                    CHECK LETTERS</span><br>
+                <span id="btnCheckWords" class="span-diff">
+                    CHECK WORDS</span><br>
+                <span id="btnNoChecks" class="span-diff">
+                NO CHECKS</span>
+            </div>
+        </button>
+        <button class="button" 
+            style="width: 10%;" 
+            onclick="showWelcome1()"
+            title="How to play">
+            <i class="fa fa-question"></i>
+        </button>
+    </div>
+    <div id="dateMenu" class="btn-group">
+        <button style="width: 10%; font-size:20px; min-height: 50px;background-color:gray;" 
+            class="button" onclick="changeDate(-1)" title="Back 1 days">
+            <i class="fa fa-angle-left"></i>
+        </button>
+        <button style="width: 10%; font-size:20px; min-height: 50px; background-color:gray" 
+            class="button" onclick="changeDate(+1)" title="Forward 1 day">
+            <i class="fa fa-angle-right"></i>
+        </button>
+        <button style="width: 50%; font-size:16px; min-height:50px; background-color:gray" 
+            id="btnStatus" class="button"  title="Next puzzle status">
+            
+        </button>
+        <button style="width: 30%; font-size:16px; min-height:50px; background-color:gray" 
+            class="button" onclick="getFresh()" title="Get fresh puzzle">
+            Next Puzzle
+            <!-- <i class="fa fa-random"></i> -->
+        </button>
+    </div>
+
+    <div id="clue" class="clue">
+        This is the clue to the answer shown below
+    </div>
+
+    <div id="gb-container" class="gb-container">
+        <div id="game-board" class="game-board">
+        </div>
+    </div>
+    <div id="keyboard-cont" class="keyboard-cont">
+        <div class="first-row">
+            <button class="keyboard-button">q</button>
+            <button class="keyboard-button">w</button>
+            <button class="keyboard-button">e</button>
+            <button class="keyboard-button">r</button>
+            <button class="keyboard-button">t</button>
+            <button class="keyboard-button">y</button>
+            <button class="keyboard-button">u</button>
+            <button class="keyboard-button">i</button>
+            <button class="keyboard-button">o</button>
+            <button class="keyboard-button">p</button>
+        </div>
+        <div class="second-row">
+            <button class="keyboard-button">a</button>
+            <button class="keyboard-button">s</button>
+            <button class="keyboard-button">d</button>
+            <button class="keyboard-button">f</button>
+            <button class="keyboard-button">g</button>
+            <button class="keyboard-button">h</button>
+            <button class="keyboard-button">j</button>
+            <button class="keyboard-button">k</button>
+            <button class="keyboard-button">l</button>
+        </div>
+        <div class="third-row">
+            <button class="keyboard-button">Del</button>
+            <button class="keyboard-button">z</button>
+            <button class="keyboard-button">x</button>
+            <button class="keyboard-button">c</button>
+            <button class="keyboard-button">v</button>
+            <button class="keyboard-button">b</button>
+            <button class="keyboard-button">n</button>
+            <button class="keyboard-button">m</button>
+            <button class="keyboard-button">Enter</button>
+        </div>
+    </div>
+
+    <div id="divCopyright" class="copyright">
+        © 2023 : all copyrights owned by Mick Jennings<br>
+        This site is under continual development<br>
+        <a href="mailto:info@addergrams.com">Please let us know of any issues</a>
+    </div>
+<div id="completion-star" class="overlay">
+    <h1>Puzzle Completed !</h1>
+    <img src="https://addergrams.com/media/completion-star.gif" style="max-width:100%" title="Animated Star GIF" alt="Animated star showing puzzle completed">
+    <p id="totalScore" style="font-size: 1.2rem;"></p>
+    <div class="btn-group">
+        <button style="width: 100%; font-size:2rem; min-height:80px;" id="btnCloseWinner" class="button" onclick="hidePanel('completion-star',false)"
+            title="Close the panel">CLOSE</button>
+    </div>
+        
+</div>
+
+<div id="puzzle-panel" class="overlay">
+    <h2>Puzzle Date</h2>
+    <div class="btn-group">
+        <button style="width: 10%; font-size:20px; min-height: 70px;" 
+            class="button" onclick="changeDate(-10)" title="Back 10 days">
+            <i class="fa fa-angle-double-left"></i>
+        </button>
+        <button style="width: 10%; font-size:20px; min-height: 70px;" 
+            class="button" onclick="changeDate(-1)" title="Back 1 day">
+            <i class="fa fa-angle-left"></i>
+        </button>
+        <button style="width: 60%; font-size:16px; min-height:70px;" 
+            id="btnGoToDate" class="button"  title="Next puzzle date">
+            23-SEP-2023<br>HARD<br>Completed
+        </button>
+        <button style="width: 10%; font-size:20px; min-height:70px;" 
+            class="button" onclick="changeDate(+1)" title="Forward 1 day">
+            <i class="fa fa-angle-right"></i>
+        </button>
+        <button style="width: 10%; font-size:20px; min-height:70px;" 
+            class="button" onclick="changeDate(+10)" title="Forward 10 days">
+            <i class="fa fa-angle-double-right"></i>
+        </button>
+    </div>
+    <br><br>
+    <div class="btn-group">
+        <button style="width: 50%; font-size:1.5rem; min-height:70px;" 
+            id="btnOpenPuzzle" class="button" onclick="openPuzzle()"
+            title="Open the selected puzzle">Open Puzzle</button>
+        <button style="width: 50%; font-size:1.5rem; min-height:70px;" 
+        id="btnClosePuzzlePanel" class="button" onclick="hidePanel('puzzle-panel',false)"
+        title="Close the panel">Cancel</button>
+    </div>
+</div>
+
+<div id="notice-panel" class="overlay">
+    <h1>Note from the author</h1>
+    <div id="notice">
+        
+    </div>
+</div>
+<div id="welcome1" class="overlay">
+     <div class="welcome">
+        <h2>Welcome to Addergrams</h2>
+        <p>Here is a quick intro to the game.</p>
+        <ul>
+            <li>
+                We publish a new Addergram daily.
+            </li>
+            <li>
+                Each puzzle is a sequence of words with clues. As you tap a letter in one of the words, the clue appears at the top.
+            </li>
+            <li>
+                Use the keyboard at the bottom to type your guesses.
+            </li>
+        </ul>
+        <p>
+            You can choose how much checking is done as you type. 
+        </p>
+    </div>
+    <div class="btn-group">
+        <button style="width: 100%; font-size:2rem; min-height:80px;" id="btnClose1" 
+            class="button" onclick="closeWelcome1()"
+            title="Next">NEXT</button>
+    </div>
+</div>
+<div id="welcome2" class="overlay">
+    <div class="welcome">
+        <h2>Welcome to Addergrams</h2>
+        <p>Tapping the lightbulb will make hint buttons available.</p>
+        <ul>
+            <li>
+                <strong>Show letter</strong> will reveal the letter you've currently selected
+            </li>
+            <li>
+                <strong>New letter</strong> will reveal the new letter which has been added to the previous word.
+            </li>
+            <li>
+                <strong>Show word</strong> will reveal the currently selected word
+            </li>
+            <li>
+                <strong>Show puzzle</strong> will solve the remainder of the puzzle for you. 
+                To prevent accidental usage the first tap will arm the button (shown orange), the second tap will solve the puzzle for you.
+            </li>
+        </ul>
+   </div>
+   <div class="btn-group">
+       <button style="width: 100%; font-size:2rem; min-height:80px;" id="btnClose2" 
+           class="button" onclick="closeWelcome2()"
+           title="Next">NEXT</button>
+   </div>
+</div>       
+<div id="welcome3" class="overlay">
+    <div class="welcome">
+        <h2>Welcome to Addergrams</h2>
+        <p>The header menu gives you options including how much help you get as you play</p>
+        <br>
+        <img src="\media\Header.png" 
+            alt="Header menu explanation" style="max-width: 100%">
+        <br>
+        <ul>
+            <li>Tap the date button <img src="\media\date.png" style="height: 2rem;" alt="Button showing the date of the current puzzle, used to choose a different puzzle"> to find another puzzle to do</li>
+            <li>Tap <i class="fa fa-share-alt"></i> to share progress with friends</li>
+            <li>Tap <i class="fa fa-bomb"></i> to reset the puzzle</li>
+            <li>Tap <i class="fa fa-lightbulb-o"></i> to get hints</li>
+            <li>Tap the checks button <img src="\media\checks.png" style="height: 2rem;" alt="Button showing the level of visual checking applied to puzzle guesses"> to change how much is checked for you</li>
+        </ul>
+        <p>
+            We hope you enjoy the puzzles each day.
+            We won't show this tour again, but you can show it by tapping <i class="fa fa-question"></i> on the menu.
+        </p>
+   </div>
+   <div class="btn-group">
+       <button style="width: 100%; font-size:2rem; min-height:80px;" id="btnClose3" 
+           class="button" onclick="closeWelcome3()"
+           title="Next">CLOSE WELCOME TOUR</button>
+   </div>
+</div>
+
+<script>
+
+
+const s0 = "⚫"; 
+const s2 = "🟣"; 
+const s4 = "🟠"; 
+const s5 = "🟡"; 
+
+function cycleChecks() {
+    gb.cycleChecks();
+    return false;
+}
+function revealPuzzle() {
+    const hintPZ = document.getElementById("hint-puzzle");
+    if (gb.solvePuzzleWarned) {
+        gb.revealPuzzle();
+        hintPZ.text = "Solve Puzzle";
+    } else {
+        alert("This will reveal all missing letters! Press again to solve.");
+        gb.solvePuzzleWarned = true;
+        hintPZ.textContent = "Really Solve";
+    }
+}
+function revealClue() {
+    gb.revealClue(gb.csrClue);
+}
+function revealLetter() {
+    gb.revealLetter();
+}
+function revealNewLetter() {
+    gb.revealNewLetter();
+}
+function bomb() {
+    gb.bomb();
+}
+function subChar(text, pos, char) {
+    if (pos >= text.length || pos < 0) {return}
+    return (text.slice(0, pos) + char + text.slice(pos+1));
+}
+function changeDate(delta) {
+    gb.changeDate(delta);
+}
+function getFresh() {
+    // work backwards through dates checking status in local storage
+    // start from today, finish back at gb.firstPuzzle
+    let dt = new Date(); // today
+    dt = setMidnight(dt);
+    do {
+        dt.setDate(dt.getDate()-1); // move back a day
+        let fn = filenameFromDate(dt);
+        let g = localStorage.getItem(`${fn}_G`);
+        let s = localStorage.getItem(`${fn}_S`);
+        // guesses and scores = partial - YES
+        // no guesses but scores = complete - NO
+        // no guesses no scores = not started - YES
+        // guesses no scores = not possible - ignore
+        if (!g) {
+            if (!s) {
+                // not started
+                break;
+            } else {
+                // complete - move to next
+            }
+        } else {
+            // partial
+            break;
+        }
+    } while (dt > gb.firstPuzzle);
+    if (dt < gb.firstPuzzle) {
+        alert("Sorry no fresh puzzles available. \n\nA new puzzle will be published each day though. ")
+    } else {
+        gb.setDate(dt);
+        gb.showDateMenu = false;
+    }
+}
+function setMidnight(d) {
+    if (Object.prototype.toString.call(d) !== "[object Date]") {
+        throw new TypeError("Parameter passed should be a date");
+    }
+    let y = d.getFullYear();
+    let m = d.getMonth();
+    let dd = d.getDate()
+    d = new Date(y,m,dd); // set back to midnight
+    return d;
+}
+function filenameFromDate(dt, r="H") {
+    if (Object.prototype.toString.call(dt) !== "[object Date]") {
+        throw new TypeError("Parameter passed should be a date");
+    }
+    let d, m, y;
+    d = dt.getDate();
+    m = dt.getMonth();
+    y = dt.getFullYear();
+    const months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", 
+        "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+    let month = months[m];
+    let f = String(d).padStart(2,"0")
+        + "-"
+        + month
+        + "-"
+        + String(y)
+        + "-"
+        + r;
+    return f;
+}
+const generateRandomString = function(length=6){
+    return Math.random().toString(36).substring(2, length)
+}
+const monthNum = function(mmm) {
+    let mnum = "";
+    switch (mmm) {
+        case "JAN":
+            return 0;
+        case "FEB":
+            return 1;
+        case "MAR":
+            return 2;
+        case "APR":
+            return 3;
+        case "MAY":
+            return 4;
+        case "JUN":
+            return 5;
+        case "JUL":
+            return 6;
+        case "AUG":
+            return 7;
+        case "SEP":
+            return 8;
+        case "OCT":
+            return 9;
+        case "NOV":
+            return 10;
+        case "DEC":
+            return 11;
+      }
+}
+
+function toggleHints() {
+    gb.toggleHints();
+}
+
+document.addEventListener("keydown", (e) => {
+    let pressedKey=String(e.key);
+    if (pressedKey == "-") {
+        //gb.setCursor(gb.csrClue, Math.max(0, gb.csrLett - 1));
+        gb.receiveLetter(pressedKey);
+    }
+    let found = pressedKey.match(/[a-z]/gi)
+    if (!found || found.length > 1) {
+        return
+    } else {
+        pressedKey=pressedKey.toUpperCase();
+        gb.receiveLetter(pressedKey);
+    }
+})
+document.getElementById("keyboard-cont").addEventListener("click", (e) => {
+    const target = e.target
+    
+    if (!target.classList.contains("keyboard-button")) {
+        return
+    }
+    let key = target.textContent
+
+    if (key === "Del" || key === "Backspace") {
+        key = "-"
+    } 
+    
+    document.dispatchEvent(new KeyboardEvent("keydown", {'key': key}))
+})
+
+async function fetchPuzzle(fn) {
+    fn = `/puzzles/${fn}.json`;
+    try {
+        let x = await fetch(fn);
+        let y = await x.text();
+        let td = JSON.parse(y);
+        gb.loaded(td);
+    }
+    catch(error) {
+        console.log(error);
+        gb.failedToLoad();
+    }
+}
+async function fetchFileList(fn) {
+    fn = "/puzzles/file_list.php";
+    try {
+        let x = await fetch(fn);
+        let y = await x.text();
+        let f = JSON.parse(y);
+        let fls = f.files;
+        gb.fileList = fls;
+        let d1 = new Date(); // Today - for checking puzzle availability
+        let yy = d1.getFullYear();
+        let mm = d1.getMonth();
+        let dd = d1.getDate()
+        d1 = new Date(yy,mm,dd); // Today without the hours, minutes, seconds
+        let completed = 0;
+        let partial = 0
+        let unavailable = 0;
+        let available = 0;
+        const flsArray = [];
+        for (let i = 0; i < fls.length; i++) {
+            let s = fls[i].file;
+            let f = s.substring(0,11); // drop the ".json"
+            let localStatus = localStorage.getItem(f);
+            let d = f.substring(0,2);
+            // Need to translate mm into a number 0 to 11
+            // before creating the date
+            let m = monthNum(f.substring(3,6));
+            let y = f.substring(7,11);
+            let d2 = new Date(y,m,d); // Puzzle date without hours, minutes, seconds
+            if (d2 == gb.gbd) {
+                gb.currentPuzzle = i;
+            }
+            if (!localStatus) { //nothing returned
+                if (d2 > d1) { //Future
+                    flsArray[i] = "U"; 
+                    unavailable += 1;
+                } else {
+                    flsArray[i] = "A";
+                    available += 1;
+                }
+            } else {
+                if (localStatus.substring(0,0) == "C") { // Allows for "C" or "COMPLETE"
+                    flsArray[i] = "C"; // Completed
+                    completed += 1;
+                } else {
+                    flsArray[i] = "P"; // Partial
+                    partial += 1;
+                }
+            }
+        }
+        gb.filestatus = flsArray;
+        gb.completed = completed;
+        gb.partial = partial;
+        gb.available = available;
+        gb.unavailable = unavailable;
+        console.log(`There are ${fls.length} available puzzles on the server`);
+        console.log(`Of which ${completed} have been completed and ${partial} are in progress`)
+        console.log(`${available} are available to play while ${unavailable} are in the future`)
+    }
+    catch(error) {
+        console.log(error);
+        //gb.failedToLoad();
+    }
+}
+async function share() {
+    if (gb.status != "C") { // if complete then shareData is already populated
+        // if not complete then set shareData
+        let s = "";
+
+        s = "I'm doing the Addergram puzzle for " + gb.fileName().substring(0,11) + "\n\n"
+        + "I'm on this clue ..."
+        + "\n\n"
+        + gb.clueSet[gb.csrClue].clue + " (" + gb.clueSet[gb.csrClue].answer.length + ")"
+        + "\n\n";
+        gb.shareData = {
+            title: "Addergrams",
+            text: s,
+            url: "https://addergrams.com",
+        };
+    }
+    console.log(gb.shareData);
+    try {
+        await navigator.share(gb.shareData);
+    } catch (err) {
+    }
+}
+
+function shareProgress() {
+    share();
+}
+
+function showPanel(panel, seconds = 0) {
+    if (localStorage.getItem(`show_${panel}`) != "N") {
+        document.getElementById(panel).style.height = "100%";
+        if (seconds > 0) {
+            setTimeout(function () {
+                hidePanel(panel);
+              }  ,seconds * 1000)
+        }
+    }
+}
+function hidePanel(panel, blockPanel = false) {
+    if (blockPanel) {
+        localStorage.setItem(`show_${panel}`,"N");
+    } 
+    document.getElementById(panel).style.height = "0%";
+}
+
+function showWelcome1() {
+    document.getElementById("welcome1").style.height = "100%";
+}
+function closeWelcome1() {
+    document.getElementById("welcome1").style.height = "0%";
+    document.getElementById("welcome2").style.height = "100%";
+}
+function closeWelcome2() {
+    document.getElementById("welcome2").style.height = "0%";
+    document.getElementById("welcome3").style.height = "100%";
+}
+function closeWelcome3() {
+    document.getElementById("welcome3").style.height = "0%";
+}
+
+async function fetchNotice(fn) {
+    fn = `${fn}.html`;
+    try {
+        let x = await fetch(fn);
+        let y = await x.text();
+        document.getElementById("notice").innerHTML = y;
+        showPanel("notice-panel");
+    }
+    catch(error) {
+        console.log(error);
+        gb.failedToLoad();
+    }
+}
+
+function datediff(first, second) {        
+    return Math.round((second - first) / (1000 * 60 * 60 * 24));
+}
+
+function getMaxLetters() {
+    if (!localStorage.getItem("MaxLetters")) {
+        
+    }
+}
+
+function setMaxLetters() {
+
+}
+
+const gb = new gameBoard();
+//gb.setDate(newDate);
+
+// Remove after Oct 2023
+if (!localStorage.getItem("BookmarkChangeNotice")) {
+    alert("I've changed the page structure to avoid some local browsers using old and out of date versions. \n\nThe new structure should make it much easier to roll out new versions and means you only ever go to one web address.\n\nPlease close any existing addergrams browser tabs you have open. Please use \n\naddergrams.com\n\n and replace any bookmarks you may have. \n\nThanks for your patience.");
+    localStorage.setItem("BookmarkChangeNotice","Y");
+}
+
+gb.load();
+//fetchNotice("notice");
+
+
+  </script>
+</body>
+</html>

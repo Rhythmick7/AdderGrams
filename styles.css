@@ -1,0 +1,323 @@
+html {
+  font-size: 100%;
+}
+body {
+  font-family: 'Lato', sans-serif;
+}
+
+h1 {
+    text-align: center;
+    font-size:2.2rem;
+    font-weight:900;
+   }
+   h2 {
+    text-align: center;
+    font-size:2.2rem;
+    font-weight:700;
+    padding: 10px;
+    margin: 10px;
+   }
+   div {
+    font-size: 2rem;
+   }
+   .welcome {
+    /* width: 100%; */
+    padding: 10px;
+    font-size: 1rem;
+   }
+   .gb-container {
+    /* position: static; */
+    width: 100%;
+  }
+  .game-board {
+    /* position: absolute; */
+    /* left: 0px;
+    top: 0px; */
+    width: 100%;
+  }
+  .whitespace-triangle {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+  }
+  #keyboard-cont {
+    margin: 1rem 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  #keyboard-cont div {
+    width: 100%;
+  }
+
+  .first-row {
+    margin: 0.1rem 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .second-row {
+    margin: 0.5rem 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+  }
+  .third-row {
+    margin: 0.1rem 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .keyboard-button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    -webkit-text-size-adjust: unset;
+    -webkit-border-radius: 0;
+    font-size: 1rem;
+    font-weight: 700;
+    padding: 0.2rem;
+    margin: 0 2px;
+    cursor: pointer;
+    border-radius: 7px;
+    border: 5px;
+    border-color:#230202;
+    min-width: 9%;
+    min-height: 50px;
+    text-transform: uppercase;
+
+  }
+
+  .clue {
+    width: 100%;
+    font-size: 1.3rem;
+    min-height: 7rem;
+    background-color: azure;
+    font-size: 1.3rem;
+    font-weight: 600;
+    padding:5px;
+  }
+  .answer {
+    width: 100%;
+  }
+  .answer-correct {
+    background-color: #04AA6D;
+  }
+  .letter {
+    border: 2px solid gray;
+    border-radius: 3px;
+    margin:2px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    height: 2rem;
+    width: 6%;
+    text-transform: uppercase;
+    padding:0%;
+    align-content: center;
+    justify-content: center;
+  }
+  .letter-correct {
+    background-color: rgb(155, 255, 127);
+    color: rgb(16, 16, 16);
+  }
+  .letter-wrong {
+    background-color: rgb(255, 127, 140);
+  }
+  .letter-outline { 
+    outline-style: solid;
+    outline-color: rgb(78, 47, 255);
+    outline-width: 3px;
+  }
+  .letter-0 {
+    /* background-color: rgb(78, 85, 77); */
+    /* background-color: rgb(123, 14, 177); */
+    background-color: black;
+    color:  whitesmoke;
+  }
+  .letter-2 {
+    /* background-color: rgb(180, 17, 118); */
+    background-color: purple;
+    color:  whitesmoke;
+  }
+  .letter-4 {
+    /* background-color: rgb(117, 16, 164); */
+    background-color: orange;
+    color:  black;
+  }
+  .letter-5 {
+    /* background-color: rgb(70, 19, 201); */
+    background-color: gold;
+    color:  black;
+  }
+  .puzzle-correct {
+    background-color: #04AA6D;
+  }
+  .btn-group {
+    width: 100%;
+
+  }
+  .btn-group .button {
+    background-color: #565c56;
+    border: none;
+    color: 	#f5f5f5;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 1.5rem;
+    font-weight: 700;
+    cursor: pointer;
+    float: left;
+    min-height: 60px;
+  }
+  .btn-group .button:hover {
+    background-color: #565c56;
+  }
+  .btn-group .button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+  .btn-group .button:hover:disabled {
+    background-color: #999b99;
+  }
+
+  .btn-group .btnCheckDiv {
+    margin: 0px;
+    border: none;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    font-size: 0.8rem;
+    font-weight: 700;
+  }
+  .btn-group .span-diff {
+    margin: 0px;
+    border: none;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    font-size: 0.8rem;
+    font-weight: 700;
+  }
+
+  .puzzleHdr {
+    width: 100%;
+    font-size: 1.6rem;
+    font-weight: 700;
+    background-color: rgb(54, 52, 52);
+    color:whitesmoke;
+    text-align: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+  .overlay {
+    height: 0%;
+    width: 100%;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0, 0.9);
+    color: whitesmoke;
+    overflow-y: hidden;
+    transition: 0.5s;
+  }
+          
+  .overlay-content {
+    position: relative;
+    top: 25%;
+    width: 100%;
+    text-align: center;
+    margin-top: 30px;
+  }
+  
+  .overlay a {
+    padding: 8px;
+    text-decoration: none;
+    font-size: 36px;
+    color: #818181;
+    display: block;
+    transition: 0.3s;
+  }
+  
+  .overlay a:hover, .overlay a:focus {
+    color: #f1f1f1;
+  }
+  
+  .overlay .closebtn {
+    position: absolute;
+    top: 20px;
+    right: 45px;
+    font-size: 60px;
+  }
+  
+  @media screen and (max-height: 450px) {
+    .overlay {overflow-y: auto;}
+    .overlay a {font-size: 20px}
+    .overlay .closebtn {
+    font-size: 40px;
+    top: 15px;
+    right: 35px;
+    }
+  }
+  .container {
+    position:fixed;
+    top:135px;
+    right: 0px;
+    width: 450px;
+    height: 250px;
+  }
+  
+  .corner {
+    width: 0;
+    height: 0;
+    border-top: 190px solid #ffcc00;
+    border-bottom: 150px solid transparent;
+    border-left: 500px solid transparent;
+    position:absolute;
+    right:0;
+  }
+  
+  .corner span {
+    position:absolute;
+    top: -110px;
+    width: 100px;
+    left: -100px;
+    text-align: center;
+    font-size: 16px;
+    font-family: arial;
+    transform: rotate(45deg);
+    display:block;
+  }
+
+  .hint-button {
+    border: 2px solid gray;
+    border-radius: 8px;
+    margin:2px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    height: 2.0rem;
+    padding: 5px;
+    text-align: left;
+    right: 10px;
+    position: absolute;
+    width: 30%;
+    background-color: #f5fc20;
+  }
+  
+  .copyright {
+    font-size: small;
+    text-align: center;
+  }
